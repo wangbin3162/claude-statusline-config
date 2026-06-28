@@ -2,7 +2,47 @@
 
 为 Claude Code 配置 statusline 的 skill。基于模块选择生成 bash 脚本，支持预设布局和自定义组合。
 
-## 当前实现
+## 快速安装
+
+### 方式一：GitHub 安装
+
+```bash
+# 直接安装到 Claude Code skills 目录
+git clone https://github.com/wangbin3162/claude-statusline-config.git ~/.claude/skills/statusline-config
+```
+
+或通过 `npx skills`：
+
+```bash
+npx skills add wangbin3162/claude-statusline-config
+```
+
+### 方式二：手动复制
+
+```bash
+cp -r /path/to/statusline-config ~/.claude/skills/
+```
+
+### 方式三：npm
+
+```bash
+npm install -g @wangbin3162/statusline-config
+npx skills add @wangbin3162/statusline-config
+```
+
+## 使用
+
+在 Claude Code 中运行：
+
+```
+/statusline-config
+```
+
+按提示选择模块和布局行数，skill 会自动生成并写入脚本。
+
+详细安装说明见 [INSTALL.md](INSTALL.md)。
+
+## 预览
 
 三行信息布局（可裁剪为 1 行 / 2 行）：
 
@@ -42,15 +82,21 @@
 - **开发者**: [model] dir branch ⚡ pct%
 - **全信息**: model/dir/duration/effort + context/tokens/cost/cache + branch/diff
 
-## 使用
+## 验证安装
 
-在 Claude Code 中运行：
+```bash
+# 确认技能已加载
+ls ~/.claude/skills/ | grep statusline-config
 
+# 测试 statusline 脚本
+echo '{"model":{"display_name":"deepseek-v4-flash"},"workspace":{"current_dir":"/test"},"context_window":{"used_percentage":45,"total_input_tokens":12345,"total_output_tokens":6789},"cost":{"total_cost_usd":0.05,"total_duration_ms":120000,"total_lines_added":10,"total_lines_removed":3},"effort":{"level":"high"}}' | bash ~/.claude/statusline-command.sh
 ```
-/statusline-config
-```
 
-按提示选择模块和布局行数，skill 会自动生成并写入脚本。
+## 依赖
+
+- bash
+- jq（用于解析 JSON）
+- git（可选，用于 git 分支显示）
 
 ## 文件结构
 
@@ -59,12 +105,33 @@
 ├── settings.json                  # 指向 statusline-command.sh
 ├── statusline-command.sh          # 生成的 statusline 脚本
 └── skills/statusline-config/      # 本 skill
+    ├── LICENSE
     ├── README.md
     ├── INSTALL.md
     ├── SKILL.md                   # 技能定义
+    ├── docs/lessons.md            # 开发经验记录
     └── scripts/
         ├── setup-statusline.py    # Python 配置工具
         └── statusline-manager.sh  # Bash 配置工具
+```
+
+## 调试
+
+```bash
+# 捕获 Claude Code 实际传入的 JSON
+cat > /tmp/debug.sh << 'EOF'
+#!/usr/bin/env bash
+cat > /tmp/statusline-input.json
+EOF
+chmod +x /tmp/debug.sh
+```
+
+然后将 `settings.json` 的 `command` 改为 `bash /tmp/debug.sh`，重启 claude 后查看 `/tmp/statusline-input.json`。
+
+## 恢复默认
+
+```bash
+jq 'del(.statusLine)' ~/.claude/settings.json > ~/.claude/settings.json.tmp && mv ~/.claude/settings.json.tmp ~/.claude/settings.json
 ```
 
 ## 颜色方案
@@ -81,43 +148,6 @@
 | 缓存 | #00D982 |
 | Effort 级别 | 黄/绿/紫/粉 |
 
-## 常见问题
+## 许可证
 
-### 不显示
-
-确保脚本以 exit 0 结束。非 git 目录下最后一行需用 `if` 而非 `&&`：
-
-```bash
-# 正确
-if [ -n "$line3" ]; then printf "%b\n" "$line3"; fi
-
-# 错误（exit 1）
-[ -n "$line3" ] && printf "%b\n" "$line3"
-```
-
-### 颜色不显示
-
-终端需支持 24-bit true color（推荐 iTerm2，macOS Terminal.app 不支持）。
-
-### 调试
-
-```bash
-# 捕获 Claude Code 实际传入的 JSON
-cat > /tmp/debug.sh << 'EOF'
-#!/usr/bin/env bash
-cat > /tmp/statusline-input.json
-EOF
-chmod +x /tmp/debug.sh
-# settings.json 的 command 改为 bash /tmp/debug.sh
-# 重启 claude，cat /tmp/statusline-input.json 即可看到原始数据
-```
-
-## 恢复默认
-
-```bash
-jq 'del(.statusLine)' ~/.claude/settings.json > ~/.claude/settings.json.tmp && mv ~/.claude/settings.json.tmp ~/.claude/settings.json
-```
-
-## License
-
-MIT
+[MIT](LICENSE) © 2025 wangbin3162
