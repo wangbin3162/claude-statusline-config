@@ -69,15 +69,41 @@ jq '.statusLine' ~/.claude/settings.json
 
 ### 预设布局
 
-直接让用户选一个，省去逐项选择：
+直接让用户选一个，省去逐项选择。每个布局下方展示其实际渲染效果（基于示例数据：model=deepseek-v4-flash, dir=project, 45%, 12.3k in/6.8k out, $0.05, git=main, +10/-3）：
 
+**1) 完整三行** (当前默认)
 ```
-1) 精简单行   🪼 model | 📁 dir | 🌿 branch
-2) 经典两行   model | dir | duration + context% · tokens | branch
-3) 完整三行   model/dir/duration/effort + context/tokens/cost/cache + branch/diff (当前)
-4) 最小信息   model · dir · context%
-5) 开发者     [model] dir branch ⚡ pct%
-6) 全信息     model dir duration effort + context dots tokens cost cache + branch diff
+🪼 deepseek-v4-flash | 🗂️ project | 🕐 2m | 🧠 high
+⏳ context: ●●●●○○○○○○ 45% | in: 12.3k | out: 6.8k | 💸 $0.05 | 💾 0%
+🍀 main | ✏️ +10 -3
+```
+
+**2) 精简单行**
+```
+🪼 deepseek-v4-flash | 📁 project | 🌿 main
+```
+
+**3) 经典两行**
+```
+🪼 deepseek-v4-flash | 📁 project | 🕐 2m
+⏳ 45% · in: 12.3k · out: 6.8k | 🌿 main
+```
+
+**4) 最小信息**
+```
+🪼 deepseek-v4-flash · 📁 project · ⏳ 45%
+```
+
+**5) 开发者**
+```
+[deepseek-v4-flash] project main ⚡ 45%
+```
+
+**6) 全信息**
+```
+🪼 deepseek-v4-flash | 🗂️ project | 🕐 2m | 🧠 high
+⏳ ●●●●○○○○○○ | in: 12.3k | out: 6.8k | 💸 $0.05 | 💾 0%
+🍀 main | ✏️ +10 -3
 ```
 
 ## 步骤三：选择布局行数
