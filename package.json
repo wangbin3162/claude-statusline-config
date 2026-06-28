@@ -1,0 +1,20 @@
+{
+  "name": "statusline-config",
+  "version": "1.0.0",
+  "description": "Claude Code statusline configuration skill — pick modules, choose layout, preview, and generate the bash script",
+  "keywords": [
+    "claude-code",
+    "claude-code-skill",
+    "statusline",
+    "prompt",
+    "claude"
+  ],
+  "license": "MIT",
+  "skills": "SKILL.md",
+  "type": "module",
+  "files": [
+    "SKILL.md",
+    "README.md",
+    "INSTALL.md"
+  ]
+}
