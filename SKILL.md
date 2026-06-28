@@ -264,12 +264,28 @@ fi
 
 #### context_pct_segment
 ```bash
+# 使用 DOT_COLORS 配色，百分比和小圆点颜色一致、随上下文用量渐变
 if [ -n "$used_pct" ] && [ "$used_pct" != "n/a" ]; then
   pct_int=$(printf "%.0f" "$used_pct")
-  if [ "$pct_int" -ge 80 ]; then ctx_c="$RED"
-  elif [ "$pct_int" -ge 50 ]; then ctx_c="$ORANGE"
-  else ctx_c="$GREEN"; fi
-  ctx_pct_seg=$(printf "${ctx_c}%d%%${RESET}" "$pct_int")
+  if [ "$pct_int" -ge 100 ]; then ctx_idx=9
+  else ctx_idx=$(( pct_int / 10 )); fi
+  ctx_cc="${DOT_COLORS[$ctx_idx]}"
+  ctx_pct_seg=$(printf "${ctx_cc}%d%%${RESET}" "$pct_int")
+fi
+```
+
+#### context_assembly_segment
+```bash
+# 组装 context 行：标签 + 圆点 + 百分比，三者颜色一致
+if [ -n "$used_pct" ] && [ "$used_pct" != "n/a" ]; then
+  if [ "$pct_int" -ge 100 ]; then ctx_idx=9
+  else ctx_idx=$(( pct_int / 10 )); fi
+  ctx_cc="${DOT_COLORS[$ctx_idx]}"
+  ctx_part="⏳ ${ctx_cc}context:${RESET} ${bar} ${ctx_cc}${pct_int}%${RESET}"
+  context_part=" ⏳ ${ctx_cc}context:${RESET} ${bar} ${ctx_cc}${pct_int}%${RESET}"
+else
+  ctx_part="⏳ ${DIM_GRAY}context:${RESET} ${bar} ${DIM_GRAY}n/a${RESET}"
+  context_part=" ⏳ ${DIM_GRAY}context:${RESET} ${bar} ${DIM_GRAY}n/a${RESET}"
 fi
 ```
 
