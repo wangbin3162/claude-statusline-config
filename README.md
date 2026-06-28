@@ -44,12 +44,41 @@ npx skills add @wangbin3162/statusline-config
 
 ## 预览
 
-三行信息布局（可裁剪为 1 行 / 2 行）：
+6 种预设布局的渲染效果（基于示例数据：model=deepseek-v4-flash, dir=project, 45%, 12.3k in/6.8k out, $0.05, git=main, +10/-3）：
 
+### 完整三行（默认）
 ```
-🪼 model | 🗂️ dir | 🕐 duration | 🧠 effort
-⏳ context: ●●●○○○○○○○ 45% | in: 12.3k | out: 6.8k | 💸 $0.05 | 💾 0%
-🍀 branch | ✏️ +10 -3
+🪼 deepseek-v4-flash | 🗂️ project | 🕐 2m | 🧠 high
+⏳ context: ●●●●○○○○○○ 45% | in: 12.3k | out: 6.8k | 💸 $0.05 | 💾 0%
+🍀 main | ✏️ +10 -3
+```
+
+### 精简单行
+```
+🪼 deepseek-v4-flash | 📁 project | 🌿 main
+```
+
+### 经典两行
+```
+🪼 deepseek-v4-flash | 📁 project | 🕐 2m
+⏳ 45% · in: 12.3k · out: 6.8k | 🌿 main
+```
+
+### 最小信息
+```
+🪼 deepseek-v4-flash · 📁 project · ⏳ 45%
+```
+
+### 开发者
+```
+[deepseek-v4-flash] project main ⚡ 45%
+```
+
+### 全信息
+```
+🪼 deepseek-v4-flash | 🗂️ project | 🕐 2m | 🧠 high
+⏳ ●●●●○○○○○○ | in: 12.3k | out: 6.8k | 💸 $0.05 | 💾 0%
+🍀 main | ✏️ +10 -3
 ```
 
 - 第三行仅在 git 仓库中显示
@@ -75,12 +104,14 @@ npx skills add @wangbin3162/statusline-config
 
 ## 预设布局
 
+- **完整三行**: model/dir/duration/effort + context/tokens/cost/cache + branch/diff（当前默认）
 - **精简单行**: model · dir · branch
 - **经典两行**: model/dir/duration + context%/tokens/branch
-- **完整三行**: 当前配置（默认）
 - **最小信息**: model · dir · context%
 - **开发者**: [model] dir branch ⚡ pct%
 - **全信息**: model/dir/duration/effort + context/tokens/cost/cache + branch/diff
+
+> 以上布局的完整渲染效果见 [预览](#预览) 章节。
 
 ## 验证安装
 
